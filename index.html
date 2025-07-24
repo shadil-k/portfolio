@@ -3,16 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadil K | UI/UX Designer</title>
+    <title>Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
+        :root {
+            --primary: #00f0ff;
+            --secondary: #ff00e4;
+            --dark: #0a0a16;
+            --darker: #05050c;
         }
         
+        body {
+            background-color: var(--dark);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-border {
+            position: relative;
+            border-radius: 0.5rem;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 2px;
+            border-radius: inherit;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
         .project-card {
             transition: all 0.3s ease;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -22,96 +63,116 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        
+
         .skill-item:hover .skill-bar {
             transform: scaleX(1.05);
         }
         
-        .menu-open {
-            transform: translateX(0);
-            opacity: 1;
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
         }
         
-        .hero-section {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.6;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 240, 255, 0.15), 0 10px 10px -5px rgba(255, 0, 228, 0.1);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary), 0 0 20px var(--primary);
         }
     </style>
 </head>
-<body class="text-gray-800">
+<body>
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden" id="particles"></div>
+    
     <!-- Navigation -->
-    <header class="fixed w-full bg-white bg-opacity-90 backdrop-blur-sm z-50 shadow-sm">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <a href="#" class="text-2xl font-bold text-indigo-600">My Portfolio.</a>
-                
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#about" class="hover:text-indigo-600 transition">About</a>
-                    <a href="#work" class="hover:text-indigo-600 transition">Work</a>
-                    <a href="#skills" class="hover:text-indigo-600 transition">Skills</a>
-                    <a href="#contact" class="hover:text-indigo-600 transition">Contact</a>
-                </nav>
-                
-                <!-- Mobile menu button -->
-                <button class="md:hidden focus:outline-none" id="mobile-menu-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
+    <nav class="fixed w-full px-6 py-4 z-50 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold gradient-text">My Profile</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-cyan-300 transition-colors">Home</a>
+                <a href="#about" class="hover:text-cyan-300 transition-colors">About</a>
+                <a href="#work" class="hover:text-cyan-300 transition-colors">Work</a>
+                <a href="#skills" class="hover:text-cyan-300 transition-colors">Skills</a>
+                <a href="#contact" class="hover:text-cyan-300 transition-colors">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-2xl">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
-        
-        <!-- Mobile menu -->
-        <div class="md:hidden fixed inset-0 bg-white z-40 transform -translate-x-full opacity-0 transition-all duration-300" id="mobile-menu">
-            <div class="flex justify-end p-6">
-                <button id="close-menu-button" class="focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div class="flex flex-col items-center space-y-8 mt-12">
-                <a href="#about" class="text-xl hover:text-indigo-600 transition">About</a>
-                <a href="#work" class="text-xl hover:text-indigo-600 transition">Work</a>
-                <a href="#skills" class="text-xl hover:text-indigo-600 transition">Skills</a>
-                <a href="#contact" class="text-xl hover:text-indigo-600 transition">Contact</a>
-            </div>
-        </div>
-    </header>
-
+    </nav>
+    
     <!-- Hero Section -->
-    <section class="hero-section min-h-screen flex items-center pt-20">
-        <div class="container mx-auto px-6 py-12 md:py-24">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-12 md:mb-0" style="margin-left: 100px;">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                        Hello, I'm <span class="text-indigo-600">Shadil K</span>
-                    </h1>
-                    <p class="text-xl text-gray-600 mb-8">
-                        A UI/UX Designer passionate about creating beautiful, functional digital experiences that solve real problems.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#work" class="px-6 py-3 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">View My Work</a>
-                        <a href="#contact" class="px-6 py-3 border-2 border-indigo-600 text-indigo-600 rounded-full hover:bg-indigo-50 transition">Contact Me</a>
-                    </div>
+    <section id="home" class="min-h-screen flex items-center pt-20">
+        <div class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6" style="width: 640px;">
+                <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+                    Hi, I'm <span class="gradient-text">Shadil k</span>. 
+                    <br>I Create 
+                    <span class="inline-block">
+                        <span class="text-blue-500 bg-clip-text" id="typing-text"></span>
+                        <span class="font-bold text-cyan-300" id="cursor">|</span>
+                    </span>
+                </h1>
+                <p class="text-gray-400 text-lg max-w-lg">
+                    A UI/UX Designer passionate about creating beautiful, functional digital experiences that solve real problems.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#work" class="px-6 py-3 rounded-full font-medium gradient-border flex items-center justify-center hover:bg-gradient-to-r from-cyan-500 to-purple-600 hover:text-white transition-all duration-300">
+                        View My Work
+                    </a>
+                    <a href="#contact" class="px-6 py-3 rounded-full font-medium border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:bg-opacity-10 transition-all duration-300">
+                        Get In Touch
+                    </a>
                 </div>
-                <div class="md:w-1/2 flex justify-center">
-                    <div class="relative rounded-2xl overflow-hidden shadow-xl">
-                        <img src="images/shabroo.png" alt="Portrait of a professional UI/UX designer working on a laptop in a modern workspace with plants and a notebook nearby" class="w-full max-w-md" />
-                    </div>
+            </div>
+            <div class="relative">
+                <div class="w-64 h-64 sm:w-80 sm:h-80 mx-auto gradient-border p-1 rounded-full">
+                    <img src="images/shadil_k.png" alt="Futuristic digital avatar of a web developer with glowing cybernetic details and a neon blue aesthetic" class="w-full h-full object-cover rounded-full" />
                 </div>
+                <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full opacity-20 blur-3xl -z-10"></div>
+                <div class="absolute top-10 -left-10 w-24 h-24 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full opacity-20 blur-3xl -z-10 floating"></div>
             </div>
         </div>
     </section>
-
+    
     <!-- About Section -->
-    <section id="about" class="py-20 bg-white">
+    <section id="about" class="py-20 bg-transparent">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-16">About Me</h2>
             
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 mb-8 md:mb-0">
-                    <img src="images/shadil.jpg" style="height: 460px;" alt="Casual portrait of Alex Morgan, a UI/UX designer, smiling in a creative office environment with design tools visible" class="rounded-xl shadow-lg w-full max-w-md mx-auto" />
+                    <img src="images/shabroo1.png" style="height: 460px;" alt="Casual portrait of Alex Morgan, a UI/UX designer, smiling in a creative office environment with design tools visible" class="rounded-xl shadow-lg w-full max-w-md mx-auto" />
                 </div>
                 <div class="md:w-1/2 md:pl-12">
                     <p class="text-lg mb-6">
@@ -135,24 +196,25 @@
             </div>
         </div>
     </section>
-
+    
+    
     <!-- Work Section -->
-    <section id="work" class="py-20 bg-gray-50">
+    <section id="work" class="py-20 bg-transparent">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-6">Works</h2>
-            <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
+            <p class="text-center text-white-600 mb-16 max-w-2xl mx-auto">
                 Here are some of my recent projects that showcase my design process and problem-solving skills.
             </p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1 -->
-                <div class="project-card rounded-xl overflow-hidden bg-white">
+                <div class="project-card rounded-xl overflow-hidden bg-white bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 shadow-lg">
                     <div class="h-64 overflow-hidden">
                         <img src="images/pseeker.jpg" alt="Mobile banking app interface with clean design, showing financial dashboard and transaction history" class="w-full h-full object-cover" />
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">part time job seeker</h3>
-                        <p class="text-gray-600 mb-4">A modern job seeking app that simplifies personal interest for young professionals</p>
+                        <p class="text-white-600 mb-4">A modern job seeking app that simplifies personal interest for young professionals</p>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">UX Design</span>
                             <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">Mobile</span>
@@ -163,52 +225,52 @@
                 </div>
                 
                 <!-- Project 2 -->
-                <div class="project-card rounded-xl overflow-hidden bg-white">
+                <div class="project-card rounded-xl overflow-hidden bg-white bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 shadow-lg">
                     <div class="h-64 overflow-hidden">
                         <img src="images/Frame 7.png" alt="E-commerce website homepage design featuring product categories and a hero banner with sales promotion" class="w-full h-full object-cover" />
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Food Delivery App</h3>
-                        <p class="text-gray-600 mb-4">food delivery applicaion for a better Food ordering Experience</p>
+                        <p class="text-white-600 mb-4">food delivery applicaion for a better Food ordering Experience</p>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">UI Design</span>
                             <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">Mobile</span>
-                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">User Testing</span>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">prototyping</span>
                             <a href="https://www.behance.net/gallery/229790079/Food-Order-App" target="_blank" rel="noopener"><span class="px-3 py-1 bg-blue-500 text-white text-sm rounded-full" style="margin-left: 75px;">view</span></a>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Project 3 -->
-                <div class="project-card rounded-xl overflow-hidden bg-white">
+                <div class="project-card rounded-xl overflow-hidden bg-white bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 shadow-lg">
                     <div class="h-64 overflow-hidden">
                         <img src="images/digi doc.png" alt="Healthcare dashboard interface with data visualization charts and patient statistics display" class="w-full h-full object-cover" />
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Healthcare Dashboard</h3>
-                        <p class="text-gray-600 mb-4">Data visualization platform for vetenary healthcare to track patient metrics</p>
+                        <p class="text-white-600 mb-4">Data visualization platform for vetenary healthcare to track patient metrics</p>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">UX Research</span>
                             <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">Dashboard</span>
-                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">Data Viz</span>
-                            <a href="https://www.behance.net/gallery/230809331/Digi-Doctor-Dashboard" target="_blank" rel="noopener"><span class="px-3 py-1 bg-blue-500 text-white text-sm rounded-full" style="margin-left: 55px;">view</span></a>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">prototyping</span>
+                            <a href="https://www.behance.net/gallery/230809331/Digi-Doctor-Dashboard" target="_blank" rel="noopener"><span class="px-3 py-1 bg-blue-500 text-white text-sm rounded-full" style="margin-left: 40px;">view</span></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Project 4 -->
-                <div class="project-card rounded-xl overflow-hidden bg-white">
+                <div class="project-card rounded-xl overflow-hidden bg-white bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 shadow-lg">
                     <div class="h-64 overflow-hidden">
                         <img src="images/farm fresh.png" alt="Healthcare dashboard interface with data visualization charts and patient statistics display" class="w-full h-full object-cover" />
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Product Landing Page</h3>
-                        <p class="text-gray-600 mb-4">This is a product-focused landing page for a brand called Farm Fresh Ghee.</p>
+                        <p class="text-white-600 mb-4">This is a product-focused landing page for a brand called Farm Fresh Ghee.</p>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">UX Research</span>
-                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">Dashboard</span>
-                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">Data Viz</span>
-                            <a href="https://www.behance.net/gallery/230779429/Landing-Page-of-FARM-FRESH" target="_blank" rel="noopener"><span class="px-3 py-1 bg-blue-500 text-white text-sm rounded-full" style="margin-left: 55px;">view</span></a>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">Web</span>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">prototyping</span>
+                            <a href="https://www.behance.net/gallery/230779429/Landing-Page-of-FARM-FRESH" target="_blank" rel="noopener"><span class="px-3 py-1 bg-blue-500 text-white text-sm rounded-full" style="margin-left: 75px;">view</span></a>
                         </div>
                     </div>
                 </div>
@@ -226,7 +288,7 @@
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-white">
+    <section id="skills" class="py-20 bg-transparent">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-6">Skills & Expertise</h2>
             <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
@@ -306,115 +368,105 @@
             <div class="mt-16 max-w-4xl mx-auto">
                 <h3 class="text-xl font-bold mb-6">Additional Skills</h3>
                 <div class="flex flex-wrap gap-3">
-                    <span class="px-4 py-2 bg-gray-100 rounded-full">HTML/CSS</span>
-                    <span class="px-4 py-2 bg-gray-100 rounded-full">User Research</span>
-                    <span class="px-4 py-2 bg-gray-100 rounded-full">Information Architecture</span>
-                    <span class="px-4 py-2 bg-gray-100 rounded-full">Prototyping</span>
-                    <span class="px-4 py-2 bg-gray-100 rounded-full">Accessibility</span>
+                    <span class="inline-block p-[2px] rounded-full bg-gradient-to-r from-purple-500 to-pink-500">
+                            <span class="block px-4 py-2 bg-transparent text-white rounded-full">
+                            HTML/CSS
+                            </span>
+                    </span>
+                    <span class="inline-block p-[2px] rounded-full bg-gradient-to-r from-purple-500 to-pink-500">
+                            <span class="block px-4 py-2 bg-transparent text-white rounded-full">
+                            User Research
+                            </span>
+                    </span>
+                    <span class="inline-block p-[2px] rounded-full bg-gradient-to-r from-purple-500 to-pink-500">
+                            <span class="block px-4 py-2 bg-transparent text-white rounded-full">
+                            Information Architecture
+                            </span>
+                    </span>
+                    <span class="inline-block p-[2px] rounded-full bg-gradient-to-r from-purple-500 to-pink-500">
+                            <span class="block px-4 py-2 bg-transparent text-white rounded-full">
+                            Prototyping
+                            </span>
+                    </span>
+                    <span class="inline-block p-[2px] rounded-full bg-gradient-to-r from-purple-500 to-pink-500">
+                            <span class="block px-4 py-2 bg-transparent text-white rounded-full">
+                            Accessibility
+                            </span>
+                    </span>
                 </div>
             </div>
         </div>
     </section>
-
-   
+    
     <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-6">Get In Touch</h2>
-            <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
-                Have a project in mind or want to discuss potential opportunities? I'd love to hear from you.
-            </p>
-            
-            <div class="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
-                <div class="lg:w-1/2">
+    <section id="contact" class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-4"><span class="gradient-text">Get In Touch</span></h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
                     <form id="contact-form" class="space-y-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                            <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="gradient-border rounded-lg">
+                                <input type="text" placeholder="Your Name" class="w-full bg-transparent p-4 focus:outline-none placeholder-gray-600" />
+                            </div>
+                            <div class="gradient-border rounded-lg">
+                                <input type="email" placeholder="Your Email" class="w-full bg-transparent p-4 focus:outline-none placeholder-gray-600" />
+                            </div>
                         </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <div class="gradient-border rounded-lg">
+                            <input type="text" placeholder="Subject" class="w-full bg-transparent p-4 focus:outline-none placeholder-gray-600" />
                         </div>
-                        <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-                            <input type="text" id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <div class="gradient-border rounded-lg">
+                            <textarea placeholder="Your Message" rows="5" class="w-full bg-transparent p-4 focus:outline-none placeholder-gray-600"></textarea>
                         </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required></textarea>
-                        </div>
-                        <button type="submit" class="w-full px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-md font-medium hover:opacity-90 transition-opacity" style="width: 530px;">
                             Send Message
                         </button>
                     </form>
                 </div>
-                
-                <div class="lg:w-1/2">
-                    <div class="bg-gray-50 p-8 rounded-xl h-full">
-                        <h3 class="text-xl font-bold mb-6">Contact Information</h3>
-                        
-                        <div class="space-y-6">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mt-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                    </svg>
+                <div class="space-y-8">
+                    <div class="gradient-border p-6 rounded-lg" style="height: 388px;">
+                        <h3 class="text-xl font-semibold mb-4">Contact Info</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4">
+                                <div class="text-cyan-400 mt-1">
+                                    <i class="fas fa-envelope"></i>
                                 </div>
-                                <div class="ml-3">
-                                    <p class="text-sm font-medium text-gray-500">Phone</p>
-                                    <a href="tel:+15551234567" class="text-base">+91 9895652685</a>
+                                <div>
+                                    <h4 class="font-medium">Email</h4>
+                                    <a href="mailto:hello@example.com" class="text-gray-400 hover:text-cyan-400 transition-colors">shadilkhan311@gmail.com</a>
                                 </div>
                             </div>
-                            
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mt-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
+                            <div class="flex items-start space-x-4">
+                                <div class="text-cyan-400 mt-1">
+                                    <i class="fas fa-map-marker-alt"></i>
                                 </div>
-                                <div class="ml-3">
-                                    <p class="text-sm font-medium text-gray-500">Email</p>
-                                    <a href="mailto:hello@alexmorgan.design" class="text-base">shadilkhan311@gmail.com</a>
+                                <div>
+                                    <h4 class="font-medium">Location</h4>
+                                    <p class="text-gray-400">Malappuram, Kerala, IND</p>
                                 </div>
                             </div>
-                            
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mt-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
+                            <div class="flex items-start space-x-4">
+                                <div class="text-cyan-400 mt-1">
+                                    <i class="fas fa-globe"></i>
                                 </div>
-                                <div class="ml-3">
-                                    <p class="text-sm font-medium text-gray-500">Location</p>
-                                    <p class="text-base">Manjeri, Malappuram</p>
+                                <div>
+                                    <h4 class="font-medium">Follow Me</h4>
+                                    <div class="flex space-x-4 mt-1">
+                                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                                            <i class="fab fa-dribbble"></i>
+                                        </a>
+                                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                                            <i class="fab fa-behance"></i>
+                                        </a>
+                                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-8">
-                            <h4 class="text-lg font-semibold mb-4">Follow Me</h4>
-                            <div class="flex space-x-4">
-                                <a href="#" class="text-gray-600 hover:text-indigo-600 transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
-                                        <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
-                                    </svg>
-                                </a>
-                                <a href="https://www.instagram.com/shaa__dil/?hl=en" class="text-gray-600 hover:text-indigo-600 transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
-                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                                    </svg>
-                                </a>
-                                <a href="www.linkedin.com/in/shadil-k" class="text-gray-600 hover:text-indigo-600 transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
-                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                                    </svg>
-                                <a href="https://www.behance.net/shadil-k" class="text-gray-600 hover:text-indigo-600 transition">
-                                    <img src="images/behance.png" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6" alt="">
-                                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-                                    </svg>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -422,7 +474,7 @@
             </div>
         </div>
     </section>
-
+    
     <!-- Footer -->
     <footer class="py-8 bg-gray-900 text-gray-300" style="padding-left: 40%;">
         <div class="container mx-auto px-6">
@@ -433,40 +485,119 @@
             </div>
         </div>
     </footer>
-
+    
     <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const closeMenuButton = document.getElementById('close-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
         
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.add('menu-open');
-        });
+        // Typewriter effect
+        const words = ["websites.", "experiences.", "designs.", "solutions."];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let isEnd = false;
         
-        closeMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.remove('menu-open');
-        });
+        function typeWriter() {
+            const currentWord = words[wordIndex];
+            const currentChar = currentWord.substring(0, charIndex);
+            document.getElementById("typing-text").textContent = currentChar;
+            
+            if (!isDeleting && charIndex < currentWord.length) {
+                charIndex++;
+                setTimeout(typeWriter, 100);
+            } else if (isDeleting && charIndex > 0) {
+                charIndex--;
+                setTimeout(typeWriter, 50);
+            } else {
+                isDeleting = !isDeleting;
+                if (!isDeleting) {
+                    wordIndex = (wordIndex + 1) % words.length;
+                }
+                setTimeout(typeWriter, 500);
+            }
+        }
         
-        // Close menu when clicking a link
-        const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('menu-open');
-            });
-        });
+        // Cursor blink effect
+        function blinkCursor() {
+            const cursor = document.getElementById("cursor");
+            cursor.style.opacity = cursor.style.opacity === "0" ? "1" : "0";
+            setTimeout(blinkCursor, 450);
+        }
+        
+        // Create floating particles
+        function createParticles() {
+            const particleContainer = document.getElementById("particles");
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement("div");
+                particle.classList.add("particle");
+                
+                // Random size between 2px and 4px
+                const size = Math.random() * 2 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random color between primary and secondary
+                const gradientPos = Math.random();
+                const r = Math.floor(0 + (255 - 0) * gradientPos);
+                const g = Math.floor(240 + (0 - 240) * gradientPos);
+                const b = Math.floor(255 + (228 - 255) * gradientPos);
+                particle.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${0.5 + Math.random() * 0.5})`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Animation
+                const duration = 30 + Math.random() * 30;
+                particle.style.animation = `float ${duration}s linear infinite`;
+                
+                // Random delay
+                particle.style.animationDelay = `${Math.random() * 30}s`;
+                
+                // Random opacity
+                particle.style.opacity = 0.3 + Math.random() * 0.3;
+                
+                particleContainer.appendChild(particle);
+            }
+        }
         
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
         
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                const navLinks = document.querySelector('nav .md\\:flex');
+                if (navLinks) {
+                    navLinks.classList.toggle('hidden');
+                    navLinks.classList.toggle('flex');
+                    navLinks.classList.toggle('flex-col');
+                    navLinks.classList.toggle('absolute');
+                    navLinks.classList.toggle('top-16');
+                    navLinks.classList.toggle('right-6');
+                    navLinks.classList.toggle('bg-[#0a0a16]');
+                    navLinks.classList.toggle('p-4');
+                    navLinks.classList.toggle('rounded-lg');
+                    navLinks.classList.toggle('space-y-4');
+                    navLinks.classList.toggle('space-x-0');
+                }
+            });
+        }
         // Form submission
         const contactForm = document.getElementById('contact-form');
         contactForm.addEventListener('submit', function(e) {
@@ -482,6 +613,13 @@
             // Show success message
             alert('Thank you for your message! I will get back to you soon.');
             contactForm.reset();
+        });
+        
+        // Initialize effects
+        document.addEventListener('DOMContentLoaded', () => {
+            typeWriter();
+            blinkCursor();
+            createParticles();
         });
     </script>
 </body>
